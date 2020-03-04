@@ -3,6 +3,7 @@ import org.academiadecodigo.bootcamp.scanners.integer.IntegerInputScanner;
 import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
 import org.academiadecodigo.bootcamp.scanners.precisiondouble.DoubleInputScanner;
 import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
+//import org.academiadecodigo.javabank.MenuPrompt.*;
 import org.academiadecodigo.javabank.domain.Bank;
 import org.academiadecodigo.javabank.domain.Customer;
 import org.academiadecodigo.javabank.domain.account.AccountType;
@@ -11,21 +12,19 @@ import org.academiadecodigo.javabank.managers.AccountManager;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PromptView {
+public class App {
 
     public static void main(String[] args){
-        PromptView promptView = new PromptView();
+        App promptView = new App();
     }
 
     /*
     Properties
      */
     private Prompt prompt = new Prompt(System.in, System.out);
-    private boolean quit = false;
     private Map<Integer, Customer> map = new HashMap<>();
-    private int ID = 0;
-    private AccountManager manager = new AccountManager();
-    private Bank bank = new Bank(manager);
+    //private Map<Integer, Menu> commands = new HashMap<>();
+    private Bank bank = new Bank(new AccountManager());
     private Customer customer1 = new Customer();
     private Customer customer2 = new Customer();
     private Customer customer3 = new Customer();
@@ -33,7 +32,7 @@ public class PromptView {
     /*
     Constructor
      */
-    public PromptView(){
+    public App(){
         addCustomer();
         bankMenu();
     }
@@ -46,9 +45,6 @@ public class PromptView {
         bank.addCustomer(customer1);
         bank.addCustomer(customer2);
         bank.addCustomer(customer3);
-        map.put(ID++, customer1);
-        map.put(ID++, customer2);
-        map.put(ID++, customer3);
     }
 
     public int askID(){
@@ -58,29 +54,39 @@ public class PromptView {
         if(IDasked <= 0){
             System.out.println("Customer ID can't be negative or equal to zero");
             askID();
-        }else if(IDasked > ID){
+        }else if(IDasked > bank.getID()){
             System.out.println("This Customer ID doesn't exist");
             askID();
         }
-        return ID;
+        return IDasked;
     }
+
+    /*public void addCommands(){
+        commands.put(1, new CreateAccount());
+        commands.put(2, new ViewAccounts());
+        commands.put(3, new Deposit());
+        commands.put(4, new Withdraw());
+        commands.put(5, new Balance());
+        commands.put(6, new Quit());
+    }*/
 
     public void bankMenu(){
         int ID = askID();
-        String[] options = {"Add new account", "View accounts", "Deposit money on account", "Withdraw money on account", "Get balance", "Quit"};
-        while(!quit){
+        String[] options = {"Create account", "View accounts", "Deposit", "Withdraw", "Get balance", "Quit"};
+        while(true){
             MenuInputScanner menu = new MenuInputScanner(options);
-            menu.setMessage("Welcome to JavaBank Blyat");
+            menu.setMessage("Welcome to JavaBank");
             int answer = prompt.getUserInput(menu);
 
             switch (answer){
                 //ADD ACCOUNT
                 case 1:
-                    customer1.openAccount(AccountType.CHECKING);
+
+                  bank.getCustomer(ID).openAccount(AccountType.CHECKING);
                     break;
                 //VIEW ACCOUNTS
                 case 2:
-                    System.out.println(customer1.getAccounts());
+                    System.out.println(bank.getCustomer(ID).getAccounts());
                     break;
                 //DEPOSIT
                 case 3:
@@ -88,7 +94,7 @@ public class PromptView {
                     DoubleInputScanner question2 = new DoubleInputScanner();
                     question1.setMessage("In which account do you want to deposit? ");
                     question2.setMessage("How much money to deposit? ");
-                    manager.withdraw(prompt.getUserInput(question1), prompt.getUserInput(question2));
+                    bank.getCustomer(ID).getAccountManager().withdraw(prompt.getUserInput(question1), prompt.getUserInput(question2));
                     break;
                 //WITHDRAW
                 case 4:
@@ -96,11 +102,11 @@ public class PromptView {
                     DoubleInputScanner question4 = new DoubleInputScanner();
                     question3.setMessage("In which account do you want to withdraw? ");
                     question4.setMessage("How much money to withdraw? ");
-                    manager.withdraw(prompt.getUserInput(question3), prompt.getUserInput(question4));
+                    bank.getCustomer(ID).getAccountManager().withdraw(prompt.getUserInput(question3), prompt.getUserInput(question4));
                     break;
                 //BALANCE
                 case 5:
-                    customer1.getBalance();
+                    bank.getCustomer(ID).getBalance();
                     break;
                 //QUIT
                 case 6:

@@ -2,7 +2,9 @@ package org.academiadecodigo.javabank.domain;
 
 import org.academiadecodigo.javabank.managers.AccountManager;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -11,7 +13,9 @@ import java.util.Set;
 public class Bank {
 
     private AccountManager accountManager;
-    private Set<Customer> customers = new HashSet<>();
+    //private Set<Customer> customers = new HashSet<>();
+    private Map<Integer, Customer> customerMap= new HashMap<>();
+    private int ID = 0;
 
     /**
      * Creates a new instance of Bank and initializes it with the given account manager
@@ -29,7 +33,8 @@ public class Bank {
      * @see Customer#setAccountManager(AccountManager)
      */
     public void addCustomer(Customer customer) {
-        customers.add(customer);
+        //customers.add(customer);
+        customerMap.put(ID++, customer);
         customer.setAccountManager(accountManager);
     }
 
@@ -42,10 +47,22 @@ public class Bank {
 
         double balance = 0;
 
-        for (Customer customer : customers) {
-            balance += customer.getBalance();
+        for (int i = 1; i <= ID; i++) {
+           balance += customerMap.get(i).getBalance();
         }
 
+        //for (Customer customer : customers) {
+        //    balance += customer.getBalance();
+        //}
+
         return balance;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public Customer getCustomer(int ID){
+        return customerMap.get(ID);
     }
 }
