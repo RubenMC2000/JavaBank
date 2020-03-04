@@ -32,7 +32,7 @@ public class AccountFactory {
         Account newAccount;
         switch (accountType) {
             case CHECKING:
-                newAccount = new CheckingAccount( ());
+                newAccount = new CheckingAccount(getNextId());
                 break;
             case SAVINGS:
                 newAccount = new SavingsAccount(getNextId());
