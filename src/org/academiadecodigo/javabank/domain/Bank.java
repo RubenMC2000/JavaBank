@@ -12,6 +12,7 @@ public class Bank {
 
     private AccountManager accountManager;
     private HashMap<Integer, Customer> customers;
+    private int currentCustomerID;
 
     /**
      * Creates a new instance of {@code Bank}
@@ -82,5 +83,13 @@ public class Bank {
     public void addCustomer(Customer customer) {
         customers.put(customer.getId(), customer);
         customer.setAccountManager(accountManager);
+    }
+
+    public void setCurrentCustomerID(int currentCustomerID) {
+        this.currentCustomerID = currentCustomerID;
+    }
+
+    public int getCurrentCustomerID() {
+        return currentCustomerID;
     }
 }
