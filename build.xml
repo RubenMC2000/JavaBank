@@ -11,7 +11,7 @@
         <property name="classes.dir" value="${build.dir}/classes" />
         <property name="main.class" value="org.academiadecodigo.javabank.App" />
         <path id="classpath">
-            <fileset dir="${lib.dir}" includes="**/*.jar"/>
+            <fileset dir="src/main/resources/lib" includes="**/*.jar"/>
         </path>
     </target>
 
@@ -33,7 +33,7 @@
                 <attribute name="Main-Class" value="${main.class}"/>
                 <attribute name="Class-Path" value="${lib.dir}"/>
             </manifest>
-            <zipgroupfileset dir="${lib.dir}" includes="*.jar"/>
+            <zipgroupfileset dir="src/main/resources/lib" includes="*.jar"/>
         </jar>
     </target>
 
